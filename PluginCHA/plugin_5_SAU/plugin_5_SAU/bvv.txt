@@ -1,0 +1,128 @@
+void __fastcall TForm1::Button1Click(TObject *Sender)
+{
+
+const double maxdbl=1e15;
+const int dL=1; //m
+const int Lmax=5000; //m - dalnost BRLK
+
+const int TET=0; //grad - tangazh
+const int N=Lmax/dL +1; //tochek rel'efa
+double Hrel[N]; // m
+double Tg_e[N]; //tangens
+const int Hrv=100; //m - PB
+double sum_dH_2=0; //m^2
+double angle, da=0.1; //grad
+int i,ti;
+
+//int NN=0;    ////////////////////////
+double eps, teps,td,de,H,L,td1,td2,de1;
+bool OK=false; //  nashli ugol
+
+ //unsigned char start, stop,sstart,sstop;    /////////////////
+ //struct  time t;                            /////////////////
+
+        rel->Series[0]->Clear();    // Hrel
+        rel->Series[1]->Clear();    // Hbrlk
+        rel->BottomAxis->Maximum=N;
+        rel->LeftAxis->Minimum=0;
+        dH->Series[0]->Clear();
+        dH->BottomAxis->Maximum=N;
+        dH->LeftAxis->Minimum=0;
+
+        Hrel[0]=0; // mesto LA
+        td=Tg_e[0]=-maxdbl; //tangensi uglov vozvyshenia
+
+        rel->Series[0]-> AddXY(0, Hrel[0],"",clBlack);
+        dH->Series[0]-> AddXY(0, 0,"",clBtnFace);
+        dH->Series[0]-> AddXY(Lmax, 0,"",clBtnFace);
+        rel->Series[1]-> AddXY(0, Hrel[0]+Hrv,"",clBlue);    //LA
+        for(i=0;i<N;i++){
+               // Hrel[i]=12; // set Hrel       ----------------------------------------------------
+               // Hrel[i]=i/100.; // set Hrel     ----------------------------------------------------
+                Hrel[i]=12*sin(i/100.)+12; // set Hrel -----------------/500------------------------
+                if(i==0)continue;
+
+                Tg_e[i]=(Hrel[i]-(Hrel[0]+Hrv))/double(i*dL); //tangensi uglov vozvyshenia
+                
+                if(Tg_e[i]<=td)Tg_e[i] = td;     //bylo -maxdbl
+                else td=Tg_e[i];
+
+                if(i*dL>Lmax)continue;
+                rel->Series[0]-> AddXY(i*dL, Hrel[i],"",clBlack);
+
+        }//i
+        rel->Repaint();
+
+          // gettime(&t);
+          // start=t.ti_hund;
+          // sstart=t.ti_sec;
+
+        //for(NN=0;NN<1000;NN++)
+        for(angle=-15;angle<=+15;angle+=da){   // angle=-15;angle<=+15
+                eps=(TET+angle)/57.3; //rad
+                teps=tan(eps);
+                if(teps> Tg_e[N-1]+da/57.3)continue;  //angle  vyshe rel'efa
+                de=maxdbl; // minimalnaya nev'iazka Tg
+                OK=false;
+               // /*
+                { //polovin. delenie
+                        int a=1,b=N-1,ab;
+                        while(b-a>1){
+                                ab=(a+b)/2;  //seredina
+                                if((teps-Tg_e[a])*(teps-Tg_e[ab])<0)b=ab;
+                                else a=ab;
+
+                        }//while
+                        de=fabs(teps-Tg_e[a]);
+                        de1=fabs(teps-Tg_e[b]);
+                        if(de<de1)ti=a;
+                        else{ti=b; de=de1;}
+                        //ti=(a+b)/2;
+                        H=Hrel[ti];
+                        if(de<=0.5*da/57.3)OK=true;
+                } //polovin. delenie
+                LB->Items->Add(AnsiString(angle)+"   "+ AnsiString(ti)+"  "+AnsiString(de)+"    "+AnsiString((int)OK)+"    1/2");
+              // */
+                        /*
+                 de=maxdbl; // minimalnaya nev'iazka Tg
+                        OK=false;
+                        for(i=1;i<N;i++){ // poisk peresechenia  - v 650 raz medlennee
+
+                            td=fabs(teps-Tg_e[i]); //tekuschaia nev'iazka Tg
+
+                            if(td<de){ //nashli lutche
+                                de=td;
+                                ti=i;
+                                H=Hrel[i];
+                                if(de<=0.5*da/57.3)OK=true; //nashli ugol
+                            }//if
+                            else if(td>de)  break; //stalo huzhe
+
+                        }//i
+                        */
+                        // LB->Items->Add(AnsiString(angle)+"   "+ AnsiString(ti)+"  "+AnsiString(de));
+                        // LB->Items->Add("-----");
+                if(OK){
+                        td=(H-(Hrel[0]+Hrv));
+                        L=sqrt(td*td+ti*dL*ti*dL);  //m
+                        if(L>Lmax)continue;     
+                        td=L*cos(eps);  // gorizontalnaya dalnost, m
+                        td1=sin(eps);
+                        td1*=L;
+
+                        rel->Series[1]-> AddXY(td, Hrel[0]+Hrv+td1,"",clRed);
+                        td2=Hrel[0]+Hrv+td1-H;  //dh
+                        dH->Series[0]-> AddXY(td, td2,"",clRed);
+                        sum_dH_2+=td2*td2;
+                }//OK
+        }//angle
+
+        //gettime(&t);
+        //stop=t.ti_hund;
+        //sstop=t.ti_sec;
+        //Ltime->Caption=(stop-start)+1000.*(sstop-sstart);
+
+        rel->Repaint();
+        Edit1->Text=sum_dH_2;
+
+}// TForm1::Button1Click

@@ -1,0 +1,69 @@
+﻿Build started 9/23/2015 9:33:16 AM.
+     1>Project "D:\00 DISTRIB\X-Plane 9\Resources\plugins\PluginCHA\plugin_9_DIRECTOR\plugin_5_SAU\plugin_5_SAU.vcxproj" on node 2 (rebuild target(s)).
+     1>_PrepareForClean:
+         Deleting file "Debug\plugin_9_Directors.lastbuildstate".
+       InitializeBuildStatus:
+         Creating "Debug\plugin_9_Directors.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I..\..\SDK\CHeaders\Widgets /I..\..\SDK\CHeaders\XPLM /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _USRDLL /D PLUGIN_5_SAU_EXPORTS /D IBM=1 /D _WINDLL /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Main.cpp MainWinDll.cpp
+         MainWinDll.cpp
+         Main.cpp
+     1>d:\00 distrib\x-plane 9\resources\plugins\plugincha\plugin_9_director\plugin_5_sau\main.cpp(169): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(105) : see declaration of 'strcpy'
+     1>d:\00 distrib\x-plane 9\resources\plugins\plugincha\plugin_9_director\plugin_5_sau\main.cpp(170): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(105) : see declaration of 'strcpy'
+     1>d:\00 distrib\x-plane 9\resources\plugins\plugincha\plugin_9_director\plugin_5_sau\main.cpp(171): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(105) : see declaration of 'strcpy'
+     1>d:\00 distrib\x-plane 9\resources\plugins\plugincha\plugin_9_director\plugin_5_sau\main.cpp(339): warning C4244: 'argument' : conversion from 'int' to 'GLfloat', possible loss of data
+     1>d:\00 distrib\x-plane 9\resources\plugins\plugincha\plugin_9_director\plugin_5_sau\main.cpp(339): warning C4244: 'argument' : conversion from 'int' to 'GLfloat', possible loss of data
+     1>d:\00 distrib\x-plane 9\resources\plugins\plugincha\plugin_9_director\plugin_5_sau\main.cpp(353): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>d:\00 distrib\x-plane 9\resources\plugins\plugincha\plugin_9_director\plugin_5_sau\main.cpp(354): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>d:\00 distrib\x-plane 9\resources\plugins\plugincha\plugin_9_director\plugin_5_sau\main.cpp(355): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>d:\00 distrib\x-plane 9\resources\plugins\plugincha\plugin_9_director\plugin_5_sau\main.cpp(356): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>d:\00 distrib\x-plane 9\resources\plugins\plugincha\plugin_9_director\plugin_5_sau\main.cpp(358): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>d:\00 distrib\x-plane 9\resources\plugins\plugincha\plugin_9_director\plugin_5_sau\main.cpp(359): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>d:\00 distrib\x-plane 9\resources\plugins\plugincha\plugin_9_director\plugin_5_sau\main.cpp(360): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>d:\00 distrib\x-plane 9\resources\plugins\plugincha\plugin_9_director\plugin_5_sau\main.cpp(361): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>d:\00 distrib\x-plane 9\resources\plugins\plugincha\plugin_9_director\plugin_5_sau\main.cpp(469): warning C4800: 'BOOL' : forcing value to bool 'true' or 'false' (performance warning)
+     1>d:\00 distrib\x-plane 9\resources\plugins\plugincha\plugin_9_director\plugin_5_sau\main.cpp(489): warning C4996: 'vsprintf': This function or variable may be unsafe. Consider using vsprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(371) : see declaration of 'vsprintf'
+     1>d:\00 distrib\x-plane 9\resources\plugins\plugincha\plugin_9_director\plugin_5_sau\main.cpp(527): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>d:\00 distrib\x-plane 9\resources\plugins\plugincha\plugin_9_director\plugin_5_sau\main.cpp(528): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>d:\00 distrib\x-plane 9\resources\plugins\plugincha\plugin_9_director\plugin_5_sau\main.cpp(554): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>d:\00 distrib\x-plane 9\resources\plugins\plugincha\plugin_9_director\plugin_5_sau\main.cpp(586): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>d:\00 distrib\x-plane 9\resources\plugins\plugincha\plugin_9_director\plugin_5_sau\main.cpp(688): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+     1>d:\00 distrib\x-plane 9\resources\plugins\plugincha\plugin_9_director\plugin_5_sau\main.cpp(705): warning C4018: '<' : signed/unsigned mismatch
+     1>d:\00 distrib\x-plane 9\resources\plugins\plugincha\plugin_9_director\plugin_5_sau\main.cpp(507): warning C4101: 'Hg' : unreferenced local variable
+     1>d:\00 distrib\x-plane 9\resources\plugins\plugincha\plugin_9_director\plugin_5_sau\main.cpp(506): warning C4101: 'alfa' : unreferenced local variable
+     1>d:\00 distrib\x-plane 9\resources\plugins\plugincha\plugin_9_director\plugin_5_sau\main.cpp(506): warning C4101: 'beta' : unreferenced local variable
+     1>d:\00 distrib\x-plane 9\resources\plugins\plugincha\plugin_9_director\plugin_5_sau\main.cpp(568): warning C4101: 'dkoord_ground' : unreferenced local variable
+         Generating Code...
+       ManifestResourceCompile:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /nologo /fo"Debug\plugin_9_Directors.xpl.embed.manifest.res" Debug\plugin_9_Directors_manifest.rc 
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\00 DISTRIB\X-Plane 9\Resources\plugins\PluginCHA\plugin_9_DIRECTOR\\..\..\plugin_9_Directors.xpl" /INCREMENTAL /NOLOGO opengl32.lib glu32.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\plugin_9_Directors.xpl.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"D:\00 DISTRIB\X-Plane 9\Resources\plugins\plugin_9_Directors.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\00 DISTRIB\X-Plane 9\Resources\plugins\PluginCHA\plugin_9_DIRECTOR\\..\..\plugin_9_Directors.lib" /MACHINE:X86 /DLL Debug\plugin_9_Directors.xpl.embed.manifest.res
+         Debug\Main.obj
+         Debug\MainWinDll.obj
+         ..\..\SDK\Libraries\Win\XPLM.lib
+         ..\..\SDK\Libraries\Win\XPWidgets.lib
+            Creating library D:\00 DISTRIB\X-Plane 9\Resources\plugins\PluginCHA\plugin_9_DIRECTOR\\..\..\plugin_9_Directors.lib and object D:\00 DISTRIB\X-Plane 9\Resources\plugins\PluginCHA\plugin_9_DIRECTOR\\..\..\plugin_9_Directors.exp
+       Manifest:
+         Deleting file "Debug\plugin_9_Directors.xpl.embed.manifest".
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"Debug\plugin_9_Directors.xpl.embed.manifest" /manifest Debug\plugin_9_Directors.xpl.intermediate.manifest
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /nologo /fo"Debug\plugin_9_Directors.xpl.embed.manifest.res" Debug\plugin_9_Directors_manifest.rc 
+       LinkEmbedManifest:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\00 DISTRIB\X-Plane 9\Resources\plugins\PluginCHA\plugin_9_DIRECTOR\\..\..\plugin_9_Directors.xpl" /INCREMENTAL /NOLOGO opengl32.lib glu32.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\plugin_9_Directors.xpl.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"D:\00 DISTRIB\X-Plane 9\Resources\plugins\plugin_9_Directors.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\00 DISTRIB\X-Plane 9\Resources\plugins\PluginCHA\plugin_9_DIRECTOR\\..\..\plugin_9_Directors.lib" /MACHINE:X86 /DLL Debug\plugin_9_Directors.xpl.embed.manifest.res
+         Debug\Main.obj
+         Debug\MainWinDll.obj
+         ..\..\SDK\Libraries\Win\XPLM.lib
+         ..\..\SDK\Libraries\Win\XPWidgets.lib
+            Creating library D:\00 DISTRIB\X-Plane 9\Resources\plugins\PluginCHA\plugin_9_DIRECTOR\\..\..\plugin_9_Directors.lib and object D:\00 DISTRIB\X-Plane 9\Resources\plugins\PluginCHA\plugin_9_DIRECTOR\\..\..\plugin_9_Directors.exp
+         plugin_5_SAU.vcxproj -> D:\00 DISTRIB\X-Plane 9\Resources\plugins\PluginCHA\plugin_9_DIRECTOR\\..\..\plugin_9_Directors.xpl
+       FinalizeBuildStatus:
+         Deleting file "Debug\plugin_9_Directors.unsuccessfulbuild".
+         Touching "Debug\plugin_9_Directors.lastbuildstate".
+     1>Done Building Project "D:\00 DISTRIB\X-Plane 9\Resources\plugins\PluginCHA\plugin_9_DIRECTOR\plugin_5_SAU\plugin_5_SAU.vcxproj" (rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:02.38
