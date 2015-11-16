@@ -53,9 +53,10 @@
 #include <math.h>
 
 double BRLK(double angle, double TET, int Hrv, int N, double Hrel[], double dL);
+double fun_osh_bal(double V);
 
 
-//#define GRAF_B //для построения графиков для статьи
+#define GRAF_B //для построения графиков для статьи
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -141,8 +142,13 @@ void	MyHotKeyCallbackDown(void *               inRefcon);
 void	MyHotKeyCallback_Ctrl_F(void *               inRefcon); 
 void	MyHotKeyCallback_Ctrl_D(void *               inRefcon); 
 
+#ifdef GRAF_B
+char F1_on = 0;
+char F2_on = 1;
+#else
 char F1_on = 1;
 char F2_on = 0;
+#endif
 char F3_on = 0;
 char F4_on = 0;
 char F5_on = 1;
@@ -525,11 +531,18 @@ void Control()
 {
 #ifdef GRAF_B
 
-	//static char step = 0;
+	static char step = 0;
+	static float dt_for_step;
+	dt_for_step+=vect_sost.dt;
+	if (dt_for_step>60)
+	{
+		dt_for_step = 0;
+		step++;
+	}
 	static char flag_start = 0;
 	static float start_time = 0;
 	float t_begin = 25;
-	float t_rec= 30;
+	float t_rec= 60;
 	if (!flag_start && vect_sost.time>t_begin)
 	{
 		flag_start = 1;
@@ -553,6 +566,7 @@ void Control()
 			fprintf(file_data,"Hg\t");
 			fprintf(file_data,"Hzad\t");
 			fprintf(file_data,"Hg-Hzad\t");
+			fprintf(file_data,"Vpr\t");
 			fprintf(file_data,"\n");
 		}
 
@@ -589,26 +603,21 @@ void Control()
 				kren_zad = -30;
 			if (t>25)
 				kren_zad = 0;
+			if (t>35)
+				kren_zad = 30;
+			if (t>45)
+				kren_zad = -30;
+			if (t>55)
+				kren_zad = 0;
 			
 			
-			kren_zad = 0;
+			//kren_zad = -1.6;
 
-
-			//if (t>10)
-			//{
-			//	t = 0;
-			//	left_right=!left_right;
-			//}
-	
-			//if (left_right)
-			//	kren_zad = 30;	
-			//else
-			//	kren_zad = -30;	
 	
 			//апериодический фильтр kren_zad
 			if (1)
 			{
-					float T = 0.5;//2.
+				float T = 0.5;//2.
 				static float y2;
 				float x = kren_zad;
 				y2+= (1/T*(x-y2))*vect_sost.dt;
@@ -641,12 +650,15 @@ void Control()
 
 		//switch (step)
 		//{
-		//case 1: Vzad = 220; break;
-		//case 2: Vzad = 100; break;
+		//case 1: Vzad = 10; break;
+		//case 2: Vzad = 20; break;
 		//case 3: Vzad = 180; break;
 		//case 4: Vzad = 250; break;
 		//case 5: Vzad = 0; break;
 		//}
+
+		//if (step>1)
+		//Vzad = 100+step*10;
 
 		//апериодический фильтр
 		if (1)
@@ -661,7 +673,7 @@ void Control()
 		float tang_zad = 0.5*(vect_sost.Vpr-Vzad);
 		Limit(tang_zad,15);
 
-		tang_zad = 50*vect_sost.JOY_Z;
+		//tang_zad = 50*vect_sost.JOY_Z;
 
 		float dz = 1.4*(tang_zad - vect_sost.tang) - 1.0*vect_sost.wz;// + 0.2*izod_wz;
 
@@ -691,6 +703,8 @@ void Control()
 		XPLMSetDataf(gControl_yoke_heading_ratio,dy);
 		vect_upr.rv = dy;
 	}
+
+
 
 	//if (1)//высота
 	//{
@@ -825,23 +839,50 @@ void Control()
 	;
 
 	//защита
-	if (RmnkVar.A[5]<0.005)	
+	if (fabs(RmnkVar.A[5])<0.005)	
 		RmnkVar.A[5] = 0.005;
 
-	vect_upr.osh = 6.7*1
+	vect_upr.osh = fun_osh_bal(vect_sost.Vpr)//;6.7*1
 		+1./RmnkVar.A[5]*(vscob);	
 
 	if (vect_upr.osh>15) vect_upr.osh = 15;
 	if (vect_upr.osh<-4) vect_upr.osh = -4;
 
 	//апериодический фильтр
+	if (0)
 	{
-		float T = 0.2;
+		float T = 0.1;
 		static float y2;
 		float x = vect_upr.osh;
 		y2+= (1/T*(x-y2))*vect_sost.dt;
 		vect_upr.osh = y2;				
 	}
+#ifdef GRAF_B
+	//Управление высотой первый вариант
+	if (0)
+	{
+		float raznH = Hzad_RV-Htek; 
+		float k = 0.5;
+		float dosh = k*raznH;
+		float osh_bal = fun_osh_bal(vect_sost.Vpr);
+		//if (vect_sost.time>20)
+		vect_upr.osh =  osh_bal+dosh;
+	}
+
+	//Управление высотой второй вариант
+	if (0)
+	{
+		float raznH = Hzad_RV-Htek; 
+		float k = 0.5;
+		float dosh = k*raznH;
+		float osh_bal = fun_osh_bal(vect_sost.Vpr);
+		float k2 = fun_osh_bal(vect_sost.Vpr);
+		float kren_rad = vect_sost.kren*M_PI/180.;
+		float dosh_kren =k2*(1-cos(kren_rad))/cos(kren_rad);
+		//if (vect_sost.time>20)
+		vect_upr.osh =  osh_bal + dosh + dosh_kren;
+	}
+#endif
 
 	//vect_upr.osh = 10;
 
@@ -879,6 +920,7 @@ void Control()
 		fprintf(file_data,"%f\t", vect_sost.Hgf);
 		fprintf(file_data,"%f\t", vect_sost.Hzad);
 		fprintf(file_data,"%f\t", vect_sost.Hgf-vect_sost.Hzad);
+		fprintf(file_data,"%f\t", vect_sost.Vpr);
 		fprintf(file_data,"\n");
 	}
 #endif
@@ -1046,10 +1088,13 @@ int	AutopilotDrawCallback(
 	//return 1;
 
 	//Загрузка начального положения вертолета
-	//IniSituation("Output\\situations\\9.sit");
+#ifdef GRAF_B
+	IniSituation("Output\\situations\\9.sit");
+	//IniSituation("Output\\situations\\10sea.sit");
+#else
 	//IniSituation("Output\\situations\\2cha.sit");
 	IniSituation("Output\\situations\\3cha_sea.sit");
-
+#endif
 	if (1)//F4_on)
 	{
 		//Получение вектора состояния
@@ -2056,3 +2101,10 @@ double BRLK(double angle, double TET, int Hrv, int N, double Hrel[], double dL){
 	delete[] Tg_e;
 	return (L);
 }//BRLK
+
+double fun_osh_bal(double V)
+{
+	double V2 = V*V;
+	double V3 = V*V2;
+	return  2.14089860694930e-07*V3	+ 9.81825345032494e-06*V2	-0.0158585304726637*V +	7.07627855953746;
+}
