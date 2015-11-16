@@ -193,10 +193,6 @@ static float Dir_kren;
 static float Dir_tang;
 static float Dir_rosh;
 
-//static float Hg;
-//static float Vy;
-//static float Vpr;
-
 static XPLMDataRef gPlaneX;
 static XPLMDataRef gPlaneY;
 static XPLMDataRef gPlaneZ;
@@ -431,11 +427,8 @@ PLUGIN_API int XPluginStart(
 	ihWnd = ihWnd;
 	hWnd = (HWND) ihWnd;
 	hDC = GetDC(hWnd);
-	BuildFont();										// Build The Font
+	BuildFont();							// Build The Font
 
-
-
-	//
 
 	/////////////выключение динамики X-Plane//////////////////////////////////
 	//int i2[20];
@@ -452,46 +445,7 @@ PLUGIN_API int XPluginStart(
 
 	//XPLMSetDatai(gOverride_joystick,0);
 	//////////////////////////////////////////////////////////////////////////
-
-	//file_data = fopen("data_cha.txt","wt");
-	//шапка для файла данных
-	//if (file_data)
-	//{
-	//	fprintf(file_data,"time\t");
-	//	fprintf(file_data,"kren\t");
-	//	fprintf(file_data,"tang\t");
-	//	fprintf(file_data,"Vy\t");
-	//	fprintf(file_data,"Hb\t");
-	//	fprintf(file_data,"Hzad\t");
-	//	fprintf(file_data,"osh\t");
-	//	fprintf(file_data,"e\t");
-	//	fprintf(file_data,"dVy\t");
-	//	fprintf(file_data,"A[0]\t");
-	//	fprintf(file_data,"A[2]\t");
-	//	fprintf(file_data,"A[3]\t");
-	//	fprintf(file_data,"A[5]\t");
-	//	fprintf(file_data,"\n");
-	//}
-
-	//2
-	//if (file_data)
-	//{
-	//	fprintf(file_data,"time\t");
-	//	fprintf(file_data,"kren_zad\t");
-	//	fprintf(file_data,"kren\t");		
-	//	fprintf(file_data,"tang\t");		
-	//	fprintf(file_data,"Vy\t");			
-	//	fprintf(file_data,"Hb\t");			
-	//	fprintf(file_data,"Hrel\t");		
-	//	fprintf(file_data,"osh\t");			
-	//	fprintf(file_data,"Vyzad\t");	
-	//	fprintf(file_data,"Hg_rv\t");
-	//	fprintf(file_data,"Hg\t");
-	//	fprintf(file_data,"Hzad\t");
-	//	fprintf(file_data,"Hg-Hzad\t");
-	//	fprintf(file_data,"\n");
-	//}
-
+	
 	//Для определителя высоты земной поверхности
 	Probe = XPLMCreateProbe(xplm_ProbeY);
 	yprobestruct->structSize = sizeof(XPLMProbeInfo_t);
@@ -564,25 +518,6 @@ void Limit11(float & f)
 	if (f>1.f) f = 1.f;
 	if (f<-1.f) f = -1.f;
 }
-
-//double UprRV(double dH, double dt)
-//{
-//	double T=0.85;
-//	double k1 = -3.5;
-//	double k2 = -2.5;
-//	double k3 = -0.5;
-//	double Vyzad_gran = 9.0;
-//	Upr.dHf = Filtr1(dH, Upr.dHf, T, dt);
-//	Upr.integraldHf += Upr.dHf*dt;
-//	//Ограничение интеграла
-//	if (Upr.integraldHf > 2.0) Upr.integraldHf = 2.0;
-//	else if (Upr.integraldHf < -2.0) Upr.integraldHf = -2.0;
-//	double dHdt = (dH - Upr.dHf)/T;
-//	double Vyzad = k1*dHdt+k2*Upr.dHf+k3*Upr.integraldHf;
-//	if (Vyzad < -Vyzad_gran) Vyzad = -Vyzad_gran;
-//	if (Vyzad > Vyzad_gran) Vyzad = Vyzad_gran;
-//	return Vyzad;
-//}
 
 char rejim_komplex = 1;//1 - RV, 2- RLS
 
@@ -784,9 +719,6 @@ void Control()
 
 	RMNK_s(RmnkVar);
 
-	//static char rejim_komplex = 1;//1 - RV, 2- RLS
-
-
 	//ПИД регулятор стаб Hрв
     if (1)
 	{
@@ -803,15 +735,6 @@ void Control()
 		const float k3 = -0.5;
 		const float T = 0.85;
 
-		//Limit(x1,150);
-		//Limit(x2,150);
-		//Limit(y1,150);
-		//if (fabs(raznH)>100)
-		//{
-		//	x1 = 0;
-		//	x2 = 0;
-		//	y1 = 0;
-		//}
 		if (rejim_komplex == 2)
 		{
 			x1 = 0;
@@ -849,10 +772,6 @@ void Control()
 	//комплексирование
 	if (F3_on)
 	{
-		//if (vect_upr.VyRLS > 4)
-		//	vect_upr.Vymax = vect_upr.VyRLS;
-		//else vect_upr.Vymax = vect_upr.VyRV;
-
 		if (vect_upr.VyRLS > 4)
 		{
 			rejim_komplex = 2;
@@ -874,10 +793,7 @@ void Control()
 		//	vect_upr.Vymax = y2;				
 		//}
 	}
-	//else
-	//	vect_upr.Vymax = vect_upr.VyRV;
 
-	//vect_upr.Vymax = vect_upr.VyRLS;
 
 	//ограничение заданной вертикальной скорости снижения
 	float Vy_MAX_descent = -4.f;
@@ -944,26 +860,7 @@ void Control()
 		y2+= (1/T*(x-y2))*vect_sost.dt;
 		e_him = y2;				
 	}
-
-	//вывод данных в файл для построения графиков
-// 	if (0)//(file_data && flag_start && !flag_stop)
-// 	{
-// 		fprintf(file_data,"%f\t", vect_sost.time-start_time);
-// 		fprintf(file_data,"%f\t", vect_sost.kren);
-// 		fprintf(file_data,"%f\t", vect_sost.tang);
-// 		fprintf(file_data,"%f\t", vect_sost.Vy);
-// 		fprintf(file_data,"%f\t", vect_sost.Hb);
-// 		fprintf(file_data,"%f\t", Hzad);
-// 		fprintf(file_data,"%f\t", vect_upr.osh);
-// 		fprintf(file_data,"%f\t", e_him/2.0*100);//max dVy = 2.0 //100%
-// 		fprintf(file_data,"%f\t", vect_sost.dVy);
-// 		fprintf(file_data,"%f\t", RmnkVar.A[0]);
-// 		fprintf(file_data,"%f\t", RmnkVar.A[2]);
-// 		fprintf(file_data,"%f\t", RmnkVar.A[3]);
-// 		fprintf(file_data,"%f\t", RmnkVar.A[5]);
-// 		fprintf(file_data,"\n");
-// 	}
-
+	
 #ifdef GRAF_B
 
 	//вывод данных в файл для построения графиков2
@@ -999,37 +896,8 @@ void Control()
 		//1.	Получить из БРЛК массивы наклонных дальностей 
 		static int c = 0;//количество точек 
 
-		//static char i = 0;
-		//i++;
-		//if (i>sector_obz*2) 
-		//{
-		//	i = 0;
-		//	memset(&p[c], 0, sizeof(Tpoint)*(100-c));
-		//	c = 0;
-		//	vect_upr.VyRLS = VymaxRLS;
-		//	VymaxRLS = -10.f;
-		//	flag_up_down_beam = !flag_up_down_beam;
-		//}	
-
 		static float temp_angle_vis;
-		//if (temp_angle_vis>sector_obz)
-		//{
-		//	flag_up_down_beam = 0;
-		//	memset(&p[c], 0, sizeof(Tpoint)*(N_DATA_RLS));
-		//	c = 0;
-		//	vect_upr.VyRLS = VymaxRLS;
-		//	VymaxRLS = -10.f;
-		//}
-		//if (temp_angle_vis<-sector_obz)
-		//{
-		//	flag_up_down_beam = 1;
-		//	memset(&p[c], 0, sizeof(Tpoint)*(N_DATA_RLS));
-		//	c = 0;
-		//	vect_upr.VyRLS = VymaxRLS;
-		//	VymaxRLS = -10.f;
-		//}
-
-
+	
 		if (flag_up_down_beam)
 		{
 			temp_angle_vis += vect_sost.dt*sector_obz*0.6666666666;//скорость вертикальной развертки 10 градусов/ сек, т.е. сканирование от -15 гр до +15 гр это 3 сек.
@@ -1080,18 +948,7 @@ void Control()
 			c++;
 		}
 
-		//if (c == 0)//Если нет ничего в секторе обзора, то снижаемся
-		//	;//vect_upr.VyRLS = -10;
-
-
 		vect_upr.angle_azimuth = 0;
-
-		//if (flag_up_down_beam)
-		//	vect_upr.angle_vis = -(i-sector_obz);
-		//else
-		//	vect_upr.angle_vis = (i-sector_obz);
-
-		//vect_upr.angle_vis = -10;
 
 		if (vect_upr.VyRLS>10.f) 
 			vect_upr.VyRLS = 10;
@@ -1780,8 +1637,6 @@ int	DirectorsDrawCallback(
 			{
 				glRasterPos2f(300, 200);
 				glPrint("D_naklon = %5.0f", vect_sost.D_naklon2);
-				//glRasterPos2f(300, 170);
-				//glPrint("D_naklon2 = %5.0f", vect_sost.D_naklon2);
 			}
 
 			if (F6_on)
@@ -1874,10 +1729,6 @@ void * inRefcon)
 
 		const int MAX_COLLECTOR = 100;//2400;
 
-
-		//TEST mistake	
-		//Tvector3 test_our_point;
-
 		int i_100 = 0;
 
 		for (int i = 0; i<DOTS; i++)
@@ -1920,12 +1771,6 @@ void * inRefcon)
 					our_point.x = koord_beam[i-1].x + ddd.x;
 					our_point.y = koord_beam[i-1].y + ddd.y;
 					our_point.z = koord_beam[i-1].z + ddd.z;
-					
-					//TEST mistake						
-					//XPLMProbeTerrainXYZ(Probe,our_point.x, 0 , our_point.z, yprobestruct);
-					//test_our_point.x = yprobestruct->locationX;
-					//test_our_point.y = yprobestruct->locationY;
-					//test_our_point.z = yprobestruct->locationZ;
 
 					Distance_to_ground = CalcDist3D(vect_sost.planeX, vect_sost.planeY, vect_sost.planeZ, our_point.x, our_point.y, our_point.z);
 
@@ -1964,11 +1809,6 @@ void * inRefcon)
 				glColor3f(0.0, 1.0, 0.0);
 				glVertex3f(koord_beam[i_100-1].x, koord_beam[i_100-1].y, koord_beam[i_100-1].z);
 				glVertex3f(our_point.x, our_point.y, our_point.z);
-
-				//TEST mistake
-				//glColor3f(1.0, 0.0, 0.0);
-				//glVertex3f(our_point.x, our_point.y, our_point.z);
-				//glVertex3f(test_our_point.x, test_our_point.y, test_our_point.z);
 			}
 			glEnd();
 		}
@@ -2092,134 +1932,16 @@ void * inRefcon)
 		for (int i2 = 0; i2<N_dots; i2++)
 		{
 			//формирование координат x и z рельефа (в которых будем искать высоту рельефа)
-			//float kurs_rad = (vect_sost.kurs+angle_azimuth_RLS)*M_PI/180.f;
 			Rel[i2].x = vect_sost.planeX+SN_kurs_rad*dL*i2;
 			Rel[i2].z = vect_sost.planeZ-CS_kurs_rad*dL*i2;
 			//получение высоты рельефа
 			XPLMProbeTerrainXYZ(Probe,Rel[i2].x, 0 , Rel[i2].z, yprobestruct);
 			Rel[i2].y = yprobestruct->locationY;
 			Hrel[i2] = Rel[i2].y;
-
-
-
-
-
-			//отображение точек вертикальными белыми линиями
-// 			if (F6_on)
-// 			{
-// 				//rawSphere(Rel[i2].x, Rel[i2].y, Rel[i2].z);
-// 				glBegin(GL_LINES);	 	
-// 				glColor3f(1.0, 1.0, 1.0);
-// 				glVertex3f(Rel[i2].x, Rel[i2].y, Rel[i2].z);
-// 				glVertex3f(Rel[i2].x, Rel[i2].y+10, Rel[i2].z);
-// 				glEnd();
-// 			}
-			//Tg_e[0]=-maxdbl;
-			//if (i2==0)
-			//	continue;
-
-			//Tg_e[i2]=(Rel[i2].y-(Rel[0].y+vect_sost.Hg))/double(dL*i2); //tangensi uglov vozvyshenia
-			//if(Tg_e[i2]<=td)
-			//	Tg_e[i2] = td;     //bylo -maxdbl
-			//else 
-			//	td=Tg_e[i2];
 		}
 
 		double dist2 = BRLK(-angle_vis_RLS,vect_sost.tang,vect_sost.Hg_rv,N_dots,Hrel,dL);
-
-
-		//double angle, da=40.1; //grad
-		//bool OK=false; //  nashli ugol
-		//int ti;
-		//static float fff;
-		//static char flag_ = 1;
-		//fff+=0.01*flag_;
-		//if (fff>30)
-		//	flag_=-1;
-		//if (fff<-30)
-		//	flag_=+1;
-
-
-		//eps=(-angle_vis_RLS+vect_sost.tang)*M_PI/180.f;//(angle_vis_RLS-vect_sost.tang)*M_PI/180.f;//-10*M_PI/180.f;//(TET+angle)/57.3; //rad
-		
-		//TEST_CHA
-		//angle_vis_RLS = -15;
-		//eps=(-angle_vis_RLS+vect_sost.tang*0)*M_PI/180.f;//(angle_vis_RLS-vect_sost.tang)*M_PI/180.f;//-10*M_PI/180.f;//(TET+angle)/57.3; //rad
-
-		//отрисовка заданного луча
-		//if (F6_on)
-		//{
-		//	Tvector3 line_beam;
-		//	//формирование координат x и z рельефа (в которых будем искать высоту рельефа)
-		//	float kurs_rad = (vect_sost.kurs+angle_azimuth_RLS)*M_PI/180.f;
-		//	line_beam.x = vect_sost.planeX+sin(kurs_rad)*MAX_Dist_RLS;
-		//	line_beam.z = vect_sost.planeZ-cos(kurs_rad)*MAX_Dist_RLS;
-		//	line_beam.y = vect_sost.planeY+tan(eps)*MAX_Dist_RLS;
-		// 
-		//	glBegin(GL_LINES);	 	
-		//	glColor3f(0.0, 1.0, 0.0);
-		//	glVertex3f(vect_sost.planeX+1, vect_sost.planeY, vect_sost.planeZ+1 );
-		//	glVertex3f(line_beam.x, line_beam.y, line_beam.z);
-		//	glEnd();
-		//}
-
-		//teps=tan(eps);
-		//// if(teps> Tg_e[N_dots-1]+da/57.3)continue;  //angle  vyshe rel'efa
-		//de=maxdbl; // minimalnaya nev'iazka Tg
-		//OK=false;
-		//// /*
-		//{ //polovin. delenie
-		//	int a=1,b=N_dots-1,ab;
-		//	while(b-a>1)
-		//	{
-		//		ab=(a+b)/2;  //seredina
-		//		if ((teps-Tg_e[a])*(teps-Tg_e[ab])<0)
-		//			b=ab;
-		//		else 
-		//			a=ab;
-		//	}//while
-		//	de=fabs(teps-Tg_e[a]);
-		//	de1=fabs(teps-Tg_e[b]);
-		//	if(de<de1)
-		//		ti=a;
-		//	else
-		//	{
-		//		ti=b; 
-		//		de=de1;
-		//	}			
-		//	//ti=(a+b)/2;
-		//	H=Rel[ti].y;
-		//	if (de<=0.01)//de<=0.5*da/57.3)
-		//		OK=true;
-		//} //polovin. delenie
-
-		//if (OK)
-		//{
-		//	td=(H-(Rel[0].y+vect_sost.Hg_rv));
-		//	L=sqrt(td*td+ti*dL*ti*dL);  //m
-		//	if (L>MAX_Dist_RLS)
-		//		L = Lmax;    					
-		//}//OK
-		//else
-		//{
-		//	L = Lmax; 
-		//	ti = N_dots-1;
-		//}
-
-		//if (ti == N_dots-1)//заглушка для логики
-		//	L = Lmax; 
-
-		vect_sost.D_naklon2 = dist2;//L;
-
-		//отрисовка расчитанного луча
-		//if (F6_on)
-		//{
-		//	glBegin(GL_LINES);	 	
-		//	glColor3f(1.0, 0.5, 1.0);
-		//	glVertex3f(vect_sost.planeX, vect_sost.planeY, vect_sost.planeZ );
-		//	glVertex3f(Rel[ti].x, Rel[ti].y, Rel[ti].z);
-		//	glEnd();
-		//}
+		vect_sost.D_naklon2 = dist2;
 
 		//Отправка данных
 		float FloatVals[56];
@@ -2238,7 +1960,6 @@ void * inRefcon)
 				flag_rec = 1;
 				file_data = fopen("data_forVB.txt","wt");
 
-
 				fprintf(file_data,"angle_vis_RLS\n");
 				fprintf(file_data,"%f\n", angle_vis_RLS);
 				fprintf(file_data,"vect_sost.tang\n");
@@ -2256,12 +1977,9 @@ void * inRefcon)
 					fprintf(file_data,"%f\t", Rel[i].y);
 					//fprintf(file_data,"%f\n", Tg_e[i]);
 				}
-
 				fclose(file_data);
 			}
 		}
-
-
 
 		//отрисовка заданного луча
 		if (F6_on)
