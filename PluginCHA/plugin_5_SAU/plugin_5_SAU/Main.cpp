@@ -2225,6 +2225,8 @@ void * inRefcon)
 		float FloatVals[56];
 		memset(FloatVals,0,sizeof(FloatVals));
 		FloatVals[8] = vect_sost.D_naklon2 ;
+		FloatVals[9] = -angle_vis_RLS+vect_sost.tang;
+		FloatVals[10] = angle_azimuth_RLS+vect_sost.kurs;
 		XPLMSetDatavf(gControl_ail2_def, FloatVals, 0, 56);
 
 		//вывод двнных в файл
